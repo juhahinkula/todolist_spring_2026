@@ -1,12 +1,6 @@
 import { useState } from "react";
-
-type Todo = {
-  description: string;
-  priority: Priority;
-  duedate: string;
-}
-
-type Priority = "low" | "medium" | "high";
+import type { Todo, Priority } from '../types';
+import TodoTable from "./TodoTable";
 
 function TodoList() {
   const [todo, setTodo] = useState<Todo>({
@@ -30,7 +24,7 @@ function TodoList() {
     }
   }
 
-  const handleDelete = (row: number) => { // row = 2
+  const handleDelete = (row: number) => {
     setTodos(todos.filter((_, index) => index != row));
   }
 
@@ -58,32 +52,7 @@ function TodoList() {
         onChange={event => setTodo({ ...todo, duedate: event.target.value })}
       />
       <button onClick={handleAdd}>Add Todo</button>
-      <table>
-        <thead>
-          <tr>
-            <th>Desription</th>
-            <th>Priority</th>
-            <th>Due date</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            todos.map((todo: Todo, index) => 
-              <tr key={index}>
-                <td>{todo.description}</td>
-                <td>{todo.priority}</td>
-                <td>{todo.duedate}</td>
-                <td>
-                  <button onClick={() => handleDelete(index)}>
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            )
-          }
-        </tbody>
-      </table>
+      <TodoTable todos={todos} handleDelete={handleDelete} />
     </>
   );
 }
