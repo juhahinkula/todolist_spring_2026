@@ -3,6 +3,7 @@ import { useState } from "react";
 type Todo = {
   description: string;
   priority: Priority;
+  duedate: string;
 }
 
 type Priority = "low" | "medium" | "high";
@@ -11,6 +12,7 @@ function TodoList() {
   const [todo, setTodo] = useState<Todo>({
     description: "",
     priority: "low",
+    duedate: "",
   })
   const [todos, setTodos] = useState<Todo[]>([]);
 
@@ -19,7 +21,8 @@ function TodoList() {
       setTodos([todo, ...todos]);
       setTodo({
         description: "",
-        priority: "low"
+        priority: "low",
+        duedate: ""
       })
     }
     else {
@@ -48,12 +51,19 @@ function TodoList() {
         <option value="medium">Medium</option>
         <option value="high">High</option>
       </select>
+      <input 
+        placeholder="Due date"
+        type="date"
+        value={todo.duedate}
+        onChange={event => setTodo({ ...todo, duedate: event.target.value })}
+      />
       <button onClick={handleAdd}>Add Todo</button>
       <table>
         <thead>
           <tr>
             <th>Desription</th>
             <th>Priority</th>
+            <th>Due date</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -63,6 +73,7 @@ function TodoList() {
               <tr key={index}>
                 <td>{todo.description}</td>
                 <td>{todo.priority}</td>
+                <td>{todo.duedate}</td>
                 <td>
                   <button onClick={() => handleDelete(index)}>
                     Delete
