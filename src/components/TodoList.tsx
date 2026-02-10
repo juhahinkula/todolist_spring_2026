@@ -1,6 +1,9 @@
 import { useState } from "react";
 import type { Todo, Priority } from '../types';
 import TodoTable from "./TodoTable";
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
 
 function TodoList() {
   const [todo, setTodo] = useState<Todo>({
@@ -30,28 +33,41 @@ function TodoList() {
 
   return(
     <>
-      <h3>My Todos</h3>
-      <input 
-        placeholder="Description"
-        value={todo.description}
-        onChange={event => setTodo({ ...todo, description: event.target.value })}
-      />
-      <select 
-        title="Priority"
-        value={todo.priority}
-        onChange={event => setTodo({ ...todo, priority: event.target.value as Priority})}
+      <Stack 
+        direction="row" 
+        spacing={2} 
+        alignItems="center" 
+        justifyContent="center"
+        mt={2}
+        mb={2}
       >
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-      </select>
-      <input 
-        placeholder="Due date"
-        type="date"
-        value={todo.duedate}
-        onChange={event => setTodo({ ...todo, duedate: event.target.value })}
-      />
-      <button onClick={handleAdd}>Add Todo</button>
+        <TextField 
+          label="Description"
+          value={todo.description}
+          onChange={event => setTodo({ ...todo, description: event.target.value })}
+        />
+        <TextField 
+          label="Priority"
+          select
+          slotProps={{
+            select: {
+              native: true,
+            },
+          }}
+          value={todo.priority}
+          onChange={event => setTodo({ ...todo, priority: event.target.value as Priority})}
+        >
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </TextField>
+        <TextField
+          label="Due date"
+          value={todo.duedate}
+          onChange={event => setTodo({ ...todo, duedate: event.target.value })}
+        />
+        <Button variant="contained" onClick={handleAdd}>Add Todo</Button>
+      </Stack>
       <TodoTable todos={todos} handleDelete={handleDelete} />
     </>
   );
